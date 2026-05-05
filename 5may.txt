@@ -173,11 +173,29 @@ docker run -d -p 8000:8000 app-name
 **18) GCP login and push flow**
 - The instructor demonstrated login and configuration in GCP.
 
-**Commands discussed:**
-```bash
-gcloud auth login
-gcloud config set project <project-id>
-gcloud auth configure-docker <region>-docker.pkg.dev
+Step 1: Login to GCP
+                                  gcloud auth login
+                                  gcloud config set project march22paid
+                                 
+                                 
+
+Step 2: Authenticate Docker with GCP
+This is important (many people miss this 👇)
+                                gcloud auth configure-docker africa-south1-docker.pkg.dev
+
+Step 3: Build Your Docker Image
+                                 docker build -t my-ajith .
+
+Step 4: Tag the Image (VERY IMPORTANT)
+You need to tag in this format:
+REGION-docker.pkg.dev/PROJECT-ID/REPO/IMAGE:TAG
+Your case:
+                                docker tag my-ajith africa-south1-docker.pkg.dev/march22paid/test/my-ajith:v1
+
+Step 5: Push the Image
+                                docker push africa-south1-docker.pkg.dev/march22paid/test/my-ajith:v1
+✅ Done!
+Now your image is available in Artifact Registry 🎉
 ```
 - Then the image is tagged and pushed to Artifact Registry.
 
