@@ -1,0 +1,57 @@
+Today's Class Summary – Kubernetes Day 2 (May 7, 2026)
+
+Cluster Setup
+
+Created a GKE cluster (second-cluster) with 3 nodes in standard mode, each with 30GB disk (90GB total cluster size)
+Cluster creation took 3–4 minutes; students connected via console.cloud.google.com and Kubernetes Engine overview
+Architecture Deep-Dive
+
+Control Plane (Master Node) Components:
+
+API Server: Central communication hub; all requests go through it
+ETCD: Key-value database storing cluster state and configuration
+Scheduler: Finds best placement for pods across nodes
+Controller Manager: Maintains desired cluster state (e.g., replica counts)
+Worker Node Components:
+
+Kubelet: Agent that communicates with master and executes pod tasks
+Kube-proxy: Handles service networking and internet exposure
+Container Runtime: Docker engine that runs containers
+Hands-On Practice
+
+Pod Creation:
+
+Command: kubectl run nginx --image=nginx:1.16
+Verified with kubectl get pod and kubectl describe pod <name>
+Service Exposure:
+
+Exposed pod via Load Balancer service through UI (port 80)
+Checked with kubectl get svc to retrieve external IP
+Accessed NGINX via browser (HTTP, not HTTPS)
+Deployments:
+
+Created deployment: kubectl create deployment prince-nginx --image=nginx
+Scaled replicas using UI or --replicas=3 flag
+Demonstrated auto-healing: deleted pod recreated automatically
+Key Concepts Explained
+
+Service vs. Pod Communication:
+
+Pods are ephemeral (die/restart frequently), so direct pod-to-pod communication breaks
+Services provide stable names/IPs for reliable communication
+Deployment vs. StatefulSet:
+
+Deployment: For identical, stateless replicas (e.g., web servers)
+StatefulSet: For unique, stateful applications requiring persistent identity (e.g., databases, Netflix subscriptions with different quality tiers)
+Persistent Volumes (PV/PVC):
+
+Analogy: Admin uploads movie (PV); user claims it (PVC) and can resume watching later
+Volume binds to pod; data persists across pod restarts
+Troubleshooting
+
+ImagePullBackOff error: Caused by typos, version mismatches, or network/authorization issues blocking Docker Hub access
+Solution: Verify image name/version, check security groups, or use private registries (ECR/GCR) in restricted environments
+Assignments
+
+Create Kubernetes cluster, NGINX pod, and service; submit screenshot to Google Classroom
+Practice scaling deployments (replicas=2, 3, etc.)
