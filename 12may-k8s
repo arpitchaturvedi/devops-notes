@@ -1,0 +1,54 @@
+12th may : k8s
+
+Based on the Kubernetes microservices deployment session from the last hour, here are scenario-based questions and answers:
+
+Deployment & Pod Management Scenarios
+1. Pod Deletion and Auto-Recovery
+
+Question: A critical email service pod was accidentally deleted in production. What happens next and why?
+
+Answer: The pod will be automatically recreated within seconds because it's managed by a deployment. The deployment controller maintains the desired state and ensures the specified number of replicas are always running. However, the email service may be unavailable for approximately 5 seconds during recreation.
+
+2. Deployment Failure Recovery
+
+Question: The payment service deployment was deleted, causing checkout failures. How would you restore it?
+
+Answer: You can redeploy by running kubectl apply -f kubernetes-manifest.yml. This command will recreate only the missing payment service deployment without affecting other running services. The manifest file uses idempotent operations, so existing services remain unchanged while missing components are created.
+
+3. High Availability Design
+
+Question: Why would you run multiple replicas of the frontend service instead of just one pod?
+
+Answer: Multiple replicas ensure high availability. With only one pod, if it fails, the service is completely down for 5 seconds until auto-recovery. With multiple replicas, other pods continue serving requests during any single pod failure, ensuring zero downtime for users.
+
+4. Service Connectivity Issue
+
+Question: After deploying microservices, the frontend cannot connect to the payment service. What should you check first?
+
+Answer: Verify that the match labels are identical between the deployment and service definitions. Services use match labels to identify which pods to route traffic to. If labels don't match (e.g., frontend-service vs frontend), connectivity will fail.
+
+Troubleshooting Scenarios
+5. Application Partial Failure
+
+Question: Users report they can browse products and add items to cart, but checkout fails with an RPC error. How do you diagnose this?
+
+Answer: This indicates a microservices architecture benefit - partial functionality remains available when one service fails. Check pod status with kubectl get pods to identify failed services. The RPC error suggests the payment service is unavailable or unreachable. Review logs and verify the payment service deployment exists.
+
+6. Monitoring Alert Response
+
+Question: Your monitoring system alerts that the payment service is down. What's your immediate action plan?
+
+Answer: First, verify the issue with kubectl get pods and kubectl get deploy. If the deployment is missing, redeploy using the specific payment service manifest or the complete kubernetes-manifest.yml file. Document the incident as a P1 issue, perform root cause analysis, and provide knowledge transfer to L1/L2 support teams to handle similar issues.
+
+Architecture & Design Scenarios
+7. Single vs Multiple Kubernetes Manifests
+
+Question: Your team deploys 10 microservices independently, taking significant time. How would you optimize this?
+
+Answer: Consolidate all service and deployment definitions into a single kubernetes-manifest.yml file for one-click deployment. This approach reduces deployment time and complexity while maintaining the ability to redeploy individual services when needed. The kubectl apply command is idempotent, so running it again only creates missing components.
+
+8. External Access Configuration
+
+Question: All services are deployed, but only the frontend needs internet access. How is this configured and why?
+
+Answer: Set the frontend service type to LoadBalancer, which provisions an external IP address. Other services use ClusterIP type (internal only) because they should only be accessed through the frontend. This follows security best practices - internal services like payment and database should never be directly exposed to the internet.
