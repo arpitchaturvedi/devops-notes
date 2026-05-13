@@ -1,0 +1,65 @@
+A Dockerfile is essentially a blueprint for your Docker image. It’s a text file containing a series of instructions that Docker uses to assemble an image automatically.
+
+Here is a breakdown of the core components and the most common commands you’ll encounter.
+
+1. Core Components of a Dockerfile
+Every Dockerfile generally follows a predictable flow:
+
+Base Image: Starting point (the OS or environment).
+
+Environment Setup: Installing dependencies and setting variables.
+
+File Transfer: Moving your local code into the container.
+
+Execution: Defining what happens when the container starts.
+
+2. Essential Dockerfile Commands
+FROM
+This is the most important instruction. Every valid Dockerfile must start with FROM. It defines the base image you are building upon.
+
+Example: FROM python:3.9-slim or FROM nginx:latest
+
+WORKDIR
+Sets the working directory for any subsequent instructions (like RUN, CMD, or COPY). It’s like using cd inside the container. If the directory doesn’t exist, Docker creates it.
+
+Example: WORKDIR /app
+
+COPY and ADD
+Both move files from your host machine into the Docker image.
+
+COPY: The preferred method for simply moving local files.
+
+ADD: A bit more "magical"—it can download files from URLs or automatically extract .tar files.
+
+Example: COPY . /app (Copies everything from the current local directory to /app)
+
+RUN
+Used to execute commands during the build process. Each RUN command creates a new layer in the image. It's typically used to install software packages.
+
+Example: RUN apt-get update && apt-get install -y git
+
+ENV
+Sets environment variables that stay with the container once it's running.
+
+Example: ENV APP_COLOR=blue
+
+EXPOSE
+Informs Docker that the container listens on the specified network ports at runtime. Note: This doesn't actually "open" the port to your host machine; it’s more like documentation.
+
+Example: EXPOSE 80
+
+CMD vs ENTRYPOINT
+These define what happens when the container starts.
+
+CMD: Provides default arguments for an executing container. It can be easily overridden when running the container.
+
+ENTRYPOINT: Configures a container that will run as an executable. It’s harder to override than CMD.
+
+Example: CMD ["python", "app.py"]
+
+3. Best Practices to Keep in Mind
+Layer Caching: Docker caches each step. Put instructions that change frequently (like COPY . .) at the bottom of the file so you don't have to rebuild the entire image every time you change one line of code.
+
+Small Base Images: Use "Alpine" or "Slim" versions of images to keep your final image size small and secure.
+
+Combine Commands: Instead of having five RUN lines, combine them using && to reduce the number of image layers.
