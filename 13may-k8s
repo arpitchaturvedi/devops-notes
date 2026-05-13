@@ -1,0 +1,151 @@
+****************************************************HPA Practical******************************************************
+Set Up Horizontal Pod Autoscaler (HPA) in GKE 🚀
+
+This guide will help you deploy an Nginx Deployment, configure resource limits, and apply HPA (Horizontal Pod Autoscaler) to scale pods based on CPU usage.
+
+✅ Step 1: Create an Nginx Deployment with Resource Limits
+
+Create a file named nginx-deployment.yaml and add the following content:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2  # Initial number of replicas
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        resources:
+          requests:
+            cpu: "250m"
+          limits:
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+
+kubectl apply -f nginx-deployment.yaml
+
+Verify the deployment:
+
+kubectl get pods
+
+kubectl describe deployment nginx-deployment
+
+✅ Step 2: Expose Nginx Service (Optional for Testing)
+
+Expose the deployment as a service:
+
+kubectl expose deployment nginx-deployment --type=LoadBalancer --port=80 --name=nginx-service
+
+Verify the service:
+
+kubectl get svc
+
+✅ Step 3: Enable Metrics Server (If Not Already Installed)
+GKE usually comes with the Metrics Server pre-installed, but you can install it manually if needed:
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+Verify the metrics server:
+
+kubectl get apiservices | grep metrics
+
+✅ Step 4: Create HPA for Nginx Deployment
+
+Run the following command to create an HPA that scales pods between 2 and 5 replicas based on CPU usage:
+
+kubectl autoscale deployment nginx-deployment --cpu-percent=2 --min=2 --max=5
+Verify the HPA configuration:
+kubectl get hpa
+Expected output:
+NAME                REFERENCE                   TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
+nginx-deployment   Deployment/nginx-deployment  0%/50%     2         5         2          1m
+
+✅ Step 5: Simulate High CPU Load to Test Scaling
+
+1️⃣ Deploy a Load Generator Pod (to stress the CPU and trigger HPA):
+kubectl run -it --rm --image=busybox load-generator -- /bin/sh
+
+2️⃣ Inside the container, run a loop to generate CPU load:
+
+while true; do wget -q -O- http://nginx-service; done
+
+3️⃣ Observe HPA scaling the pods:
+
+kubectl get hpa
+kubectl get pods -w
+
+
+✅ Step 6: Cleanup (Optional)
+After testing, clean up your resources:
+
+kubectl delete hpa nginx-deployment
+kubectl delete deployment nginx-deployment
+kubectl delete svc nginx-service
+
+
+🎯 Final Output & Result
+Initially, there are 2 Nginx pods.
+When CPU usage exceeds 50%, HPA scales up the pods dynamically (up to 5).
+If CPU load reduces, HPA scales down the pods.
+This ensures efficient resource utilization and cost management.
+---------------
+𝗗𝗲𝘃𝗢𝗽𝘀 𝗘𝗻𝗴𝗶𝗻𝗲𝗲𝗿𝘀 are not judged by how many commands they remember…
+They are judged by 𝗵𝗼𝘄 𝗳𝗮𝘀𝘁 𝘁𝗵𝗲𝘆 𝗰𝗮𝗻 𝘁𝗿𝗼𝘂𝗯𝗹𝗲𝘀𝗵𝗼𝗼𝘁 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻 𝗜𝘀𝘀𝘂𝗲𝘀 🔥
+
+Today’s challenge for all Kubernetes learners 👇
+
+✅ Comment the 𝗸𝘂𝗯𝗲𝗰𝘁𝗹 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 you will use
+✅ Execute them in your K8s lab/cluster
+✅ Share screenshots in comments
+✅ Mention the root cause + fix
+
+📌 Real-Time Kubernetes Issues + 1-Line Theory Solution
+
+🔹 𝗣𝗼𝗱𝘀 𝗻𝗼𝘁 𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴
+➡️ Usually caused by image, resource, or configuration issues; check pod events and logs.
+
+🔹 𝗦𝗲𝗿𝘃𝗶𝗰𝗲 𝗻𝗼𝘁 𝗮𝗰𝗰𝗲𝘀𝘀𝗶𝗯𝗹𝗲
+➡️ Mostly due to wrong selectors, target ports, or networking configuration mismatch.
+
+🔹 𝗣𝗲𝗿𝘀𝗶𝘀𝘁𝗲𝗻𝘁 𝗩𝗼𝗹𝘂𝗺𝗲 𝗖𝗹𝗮𝗶𝗺 (𝗣𝗩𝗖) 𝗶𝘀𝘀𝘂𝗲𝘀
+➡️ Happens when storage class, access mode, or available storage does not match requirements.
+
+🔹 𝗖𝗼𝗻𝗳𝗶𝗴𝗠𝗮𝗽 𝗸𝗲𝘆 𝗻𝗼𝘁 𝗳𝗼𝘂𝗻𝗱
+➡️ Application is trying to access a missing or incorrectly named ConfigMap key.
+
+🔹 𝗖𝗿𝗮𝘀𝗵𝗟𝗼𝗼𝗽𝗕𝗮𝗰𝗸𝗢𝗳𝗳 𝘀𝘁𝗮𝘁𝘂𝘀
+➡️ Container keeps crashing repeatedly because of application or startup failures.
+
+🔹 𝗜𝗺𝗮𝗴𝗲𝗣𝘂𝗹𝗹𝗕𝗮𝗰𝗸𝗢𝗳𝗳 𝗲𝗿𝗿𝗼𝗿
+➡️ Kubernetes cannot pull the container image due to wrong image name or registry authentication issue.
+
+🔹 𝗡𝗼𝗱𝗲 𝗡𝗼𝘁 𝗥𝗲𝗮𝗱𝘆
+➡️ Node becomes unhealthy because of kubelet, network, disk pressure, or resource issues.
+
+🔹 𝗙𝗮𝗶𝗹𝗲𝗱 𝗦𝗰𝗵𝗲𝗱𝘂𝗹𝗶𝗻𝗴
+➡️ Scheduler cannot place pod because cluster resources or node conditions are insufficient.
+
+🔹 𝗥𝗕𝗔𝗖 𝗮𝘂𝘁𝗵𝗼𝗿𝗶𝘇𝗮𝘁𝗶𝗼𝗻 𝗲𝗿𝗿𝗼𝗿𝘀
+➡️ User or service account does not have required permissions through Roles or RoleBindings.
+
+🔹 𝗜𝗻𝗴𝗿𝗲𝘀𝘀 𝗖𝗼𝗻𝘁𝗿𝗼𝗹𝗹𝗲𝗿 𝗘𝗿𝗿𝗼𝗿
+➡️ Ingress routing fails due to incorrect rules, backend service issues, or SSL/TLS configuration.
+
+💡 Example Commands:
+
+kubectl get pods -A
+kubectl describe pod
+kubectl logs
+kubectl get svc
+kubectl get events --sort-by=.metadata.creationTimestamp
