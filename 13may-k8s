@@ -120,6 +120,9 @@ Today’s challenge for all Kubernetes learners 👇
 
 🔹 𝗣𝗲𝗿𝘀𝗶𝘀𝘁𝗲𝗻𝘁 𝗩𝗼𝗹𝘂𝗺𝗲 𝗖𝗹𝗮𝗶𝗺 (𝗣𝗩𝗖) 𝗶𝘀𝘀𝘂𝗲𝘀
 ➡️ Happens when storage class, access mode, or available storage does not match requirements.
+    kubectl get pvc <pvc-name>
+    kubectl describe pvc <pvc-name>
+  
 
 🔹 𝗖𝗼𝗻𝗳𝗶𝗴𝗠𝗮𝗽 𝗸𝗲𝘆 𝗻𝗼𝘁 𝗳𝗼𝘂𝗻𝗱
 ➡️ Application is trying to access a missing or incorrectly named ConfigMap key.
