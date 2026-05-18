@@ -1,0 +1,3 @@
+terraform vs ansible: 
+terraform is used for creating infra from scratch and for big changes 
+ansible is used for minor changes in the already created infrastructure.
