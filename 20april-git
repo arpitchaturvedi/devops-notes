@@ -1,0 +1,17 @@
+First time git setup login :
+Identify yourself first : 
+## git config --global user.name "Admin"
+## git config --global user.email "er.arpitchaturvedi@gmail.com"
+## git config --global --list
+
+Note : Master is the main branch but we change it to "MAIN" always
+
+echo "newreponame" >> README.md
+git init  #initialize
+git add README.md   #adding file git track
+git status  #for checking files are tracked or not
+git add *   #adding all files to be tracked by git
+git commit -m "first commit"  #moving files from local --> staging area
+git branch -M main  #forcefully rename your current local branch to main
+git remote add origin "https://github.com/reponame"   #link your local project to a repository on github
+git push -u origin main  #push your current branch to the remote repository named origin.
