@@ -1,0 +1,14 @@
+FORKING : Copy repo from 3rd person repository to our own called forking and then do the changes locally.
+
+git clone #clone from github to git in the local
+git pull  or git pull --force # last changes to local repo
+git remote   # git remote destination details
+git push --force push latest changes to remote repo
+git reset --hard  #git memory clean rarely used or tidy up your code before commit
+git revert <commit id>  # revert the changes
+git checkout <brnch name >  #switch between branches
+git branch #create new branch
+git merge #combined the specific branch with main branch
+git branch -d   # delete branch
+git stash #temporary save of the code locally
+git rebase  ##which allows for applying changes from one branch onto another
