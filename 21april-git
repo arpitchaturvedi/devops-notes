@@ -11,4 +11,4 @@ git branch #create new branch
 git merge #combined the specific branch with main branch
 git branch -d   # delete branch
 git stash #temporary save of the code locally
-git rebase  ##which allows for applying changes from one branch onto another
+git rebase master ##which allows for applying changes from one branch onto another
