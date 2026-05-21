@@ -5,7 +5,10 @@ Now a new option under MANAGE JENKINS will appear as "MANAGE AND ASSIGN ROLES"
 Now Create a jenkins freestyle job 
   - add git repo of any java app
   -  add creds if private repo
+  - change "master" branch to "main" branch
   -  Select POLL SCM for triggers
   -  add * * * * * for everymin build trigger whenever there is change in the git repo.
   -  check who run the build by going into build details and on top it is written "Started by an SCM change"
-  
+  - lastly add build commands for java app like : 
+              # javac helloworld.java  (file name)
+              # java Simple   (class name)
