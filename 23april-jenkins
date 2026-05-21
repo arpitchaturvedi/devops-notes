@@ -1,0 +1,11 @@
+Logged in to the jenkins with arpit user , password as admin
+Installed RBAC plugin named ROLE BASED AUTHORISATION STRATEGY, restart jenkins.
+Go to Manage jenkins > Security > Authorization > select from drop down "Project based matrix authorization strategy".
+Now a new option under MANAGE JENKINS will appear as "MANAGE AND ASSIGN ROLES"
+Now Create a jenkins freestyle job 
+  - add git repo of any java app
+  -  add creds if private repo
+  -  Select POLL SCM for triggers
+  -  add * * * * * for everymin build trigger whenever there is change in the git repo.
+  -  check who run the build by going into build details and on top it is written "Started by an SCM change"
+  
