@@ -6,8 +6,13 @@ Install jenkins on UBUNTU :
 https://www.jenkins.io/doc/book/installing/linux/
 Install JAVA : 
 sudo apt update
-sudo apt install fontconfig openjdk-21-jre
+sudo apt install fontconfig openjdk-21-jre or sudo apt install default-jre
+sudo apt install default-jdk
+or 
+wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+sudo dpkg -i jdk-21_linux-x64_bin.deb
 java -version
+----------
 If the installation was successful, you should see an output similar to the following:
 openjdk 21.0.8 2025-07-15
 OpenJDK Runtime Environment (build 21.0.8+9-Debian-1)
