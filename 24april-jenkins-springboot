@@ -1,0 +1,34 @@
+Java springboot : Springboot related information stored in POM.xml file (Project Object Model)
+Springboot is a java framework if you want to develop web based app. Dev will write in pom.xml
+POM.xml is a configuration file can also be used other then springboot.
+
+Maven : Build automation tool for java.
+
+Springboot app :
+developer write the code and give you the link to git repo
+you run the maven commands to build it :
+mvn clean : delete old compiled files target/folder
+mvn test : run all test cases imp in prod
+mvn package: compiles code + run tests + create JAR file
+
+Behind the scene : 
+java code is compiled to .class file
+Dependencies springboot,etc are auto downloaded via Maven(pom.xml)
+final output : executable.jar
+then you run the app : 
+    #java -jar appname.jar --httpPort=8082 #anyport
+-----------------
+Now go to jenkins 
+create freestyle project > configure > add git repo of the springboot app > change master branch to main branch
+build will be a SUCCESS because integration of git and jenkins is successful, not because the java code is OK.
+ADD BUILD STEPS in shell :
+  -  mvn test
+  -  mvn package
+  build again > it will give mvn not found error
+  Now , we have to install maven on the jenkins server by ssh into jenkins server.
+     # apt-get install maven
+  again build and now build will be successful
+  Check for target directory path from project name > workspace > target/package.jar 
+  SSH into jenkins server and go to above path and run command:
+      # java -jar shopping_Cart.jar --httpPort=3000
+    
