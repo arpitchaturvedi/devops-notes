@@ -82,6 +82,7 @@ Expected Outcome:
 
 Successful job execution across clouds
  Real-World Challenges (Ask Students to Solve)
+NOTE : to take JENKINS backup , backup the config.xml to github repo.
 
 What happens if SSH fails?
 How to fix "connection refused" error?
