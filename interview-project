@@ -1,0 +1,72 @@
+Checkstyle: A static code analysis tool specifically for Java. It checks source code against a set of coding standards (e.g., naming conventions, whitespace, and formatting) to ensure team-wide consistency.
+SonarScanner: The "engine" that runs on your local machine or CI server. It scans your source code, executes analysis (including Checkstyle rules if configured), and uploads the results to the SonarQube server.
+SonarQube: A central platform that hosts the dashboards for code quality and security. It receives data from the SonarScanner to track bugs, vulnerabilities, and "code smells" over time.
+Nexus (Sonatype): An artifact repository manager. Once the code passes analysis and is built into a "package" (like a JAR file), Nexus stores and versions these artifacts so they can be safely used in deployment.
+
+
+
+
+So the developer makes a code change.
+Commit to version control system or source code manager.
+An automation tool will automatically fetch that code, build it, run a unit test and return the outcome
+on Slack channel.
+So we'll be using Slack anyways.
+The next.
+Phase will be.
+It will run core analysis and core analysis.
+There will be gates, quality gates.
+If the threshold if it is not passing the threshold cap, then it's good.
+If it's passing the threshold, then a notification will be sent on Slack channel.
+If this is good, it goes to the next level.
+Then the software will be built, it will be packaged and the artifact will be uploaded and its outcome
+notification will be also sent.
+The artifact or the software will be stored into artifact repository.
+If all these stages are successful, then the software can be promoted to the next level.
+If there is any failure, the notification will be anyways sent.
+Once the notification is received by the developer for any failure, they will make the code change,
+they'll make the fix and the process repeats again.
+So there will be a regular code commits, continuous code commits, and this process will run continuously.
+So that's why the name came to continuous, continuous integration.
+So this process will be automated.
+So this can be done multiple times in a day.
+If you want.
+Okay.
+Now, let's see.
+Architectural design by using all the tools.
+So a developer will make code change by using his or her ID like Visual Studio.
+Our intelligence and that tool that ID will be connected to a good repository.
+So developer makes a code change and commits.
+This comet will be synced with a remote repository will be using GitHub.
+So as soon as GitHub receives a comet.
+Our continuous integration server.
+Jenkins will detect that and fetch the changes.
+Fetch the latest code so it will have an integration with GitHub.
+Then Jenkins know Jenkins will be running some code test.
+Unit test, basically, which is part of your build process.
+If there is any failure, the notification will be sent.
+If it passes.
+Code analysis will be done on the code by using checkstyle and a sonar scanner.
+So in this project, we'll have multiple code analysis tool.
+So it will generate some report and this report we are going to publish on so on the Sonarqube server.
+So on our qube server will display the result and we'll also have quality gates, a quality criteria.
+If you're passing the quality criteria, we can move to the next level or a failure notification will
+be sent and the process really stops.
+So you see, we are putting brakes at every level.
+If there is any failure, it automatically breaks.
+If not, the process continues automatically anyways.
+So once the code analysis is done.
+Then we'll build the artifact and we have Java code.
+So we're going to use Maven Build Tool.
+If there is any build failures, any build errors, notification will be sent.
+While the source code is getting built, it will need some dependency over Maven.
+We need some maven dependencies.
+Those dependencies we will be storing in Nexus repository.
+So Maven will automatically download all the dependency from Maven repository, which is in Nexis.
+Is this Chronotype Nexus.
+Once the artifact is packaged, once the software is really created, then the software we are going to upload it back to Nexus sonar type repository.
+So really using Nexus Monotype repository for two cases.
+One is to download dependencies from and the second is uploading our artifact or storing our artifact.
+So we're going to version and store the artifact.
+So every time this continuous integration process runs, we'll have a new version of software.
+And based on requirements and choices. Any version then can be selected from Nexis repository and can be deployed to servers.
+Okay.
