@@ -1,8 +1,9 @@
 Checkstyle: A static code analysis tool specifically for Java. It checks source code against a set of coding standards (e.g., naming conventions, whitespace, and formatting) to ensure team-wide consistency.
-SonarScanner: The "engine" that runs on your local machine or CI server. It scans your source code, executes analysis (including Checkstyle rules if configured), and uploads the results to the SonarQube server.
+SonarScanner: The "engine" that runs on your local machine or CI server. It scans your source code, executes analysis (including Checkstyle rules if configured), and uploads the results to the SonarQube server. 
 SonarQube: A central platform that hosts the dashboards for code quality and security. It receives data from the SonarScanner to track bugs, vulnerabilities, and "code smells" over time.
-Nexus (Sonatype): An artifact repository manager. Once the code passes analysis and is built into a "package" (like a JAR file), Nexus stores and versions these artifacts so they can be safely used in deployment.
+Nexus (Sonatype): An artifact repository manager. Once the code passes analysis and is built into a "package" (like a JAR file), Nexus stores and versions these artifacts so they can be safely used in deployment. port : 8081
 
+PLUGINS : maven integration , github integration, nexus artifact uploader, sonarqube scanner, slack, build timestamp(for version jenkins), archiveartifacts for archiveing java build package like .war
 
 
 
@@ -70,3 +71,8 @@ So we're going to version and store the artifact.
 So every time this continuous integration process runs, we'll have a new version of software.
 And based on requirements and choices. Any version then can be selected from Nexis repository and can be deployed to servers.
 Okay.
+--------------------
+Add credentials and jdk path and maven version , nexus repo url to jenkins global credentials under tools.
+
+
+
