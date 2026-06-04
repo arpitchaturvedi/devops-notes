@@ -1,0 +1,20 @@
+Splunk + migration 6R strategies
+---------------------------------
+docker-compose up -d
+
+version : "3.8"
+
+services:
+  splunk:
+    image: splunk/splunk: latest
+    container_name: splunk
+    hostname: splunk
+    environment:
+      SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_PASSWORD: Welcome@4u22
+    ports:
+      - "8000:8000"    //frontend
+      - "9997:9997"    //Receiving port for indexer
+      - "8089:8089"   //REST-API
+    restart: unless-stopped  
